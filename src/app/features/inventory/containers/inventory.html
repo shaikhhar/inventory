@@ -1,0 +1,40 @@
+<app-layout>
+  <div class="inventory-container">
+    <mat-toolbar color="primary">
+      <span>Product list</span>
+      <span class="spacer"></span>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Search inventory...</mat-label>
+        <input matInput [formControl]="searchControl" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Filter by category</mat-label>
+        <mat-select [formControl]="categoryControl">
+          <mat-option value="All">All</mat-option>
+          <mat-option value="Electronics">Electronics</mat-option>
+          <mat-option value="Clothing">Clothing</mat-option>
+          <mat-option value="Accessories">Accessories</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-toolbar>
+
+    <ng-container *ngIf="loading$ | async; else list">
+      <p>Loading...</p>
+    </ng-container>
+    <ng-template #list>
+      <div *ngFor="let p of products$ | async; trackBy: trackById" class="product-card">
+        <mat-card class="product-container">
+          <div class="product-details">
+            <div class="product-info">
+              <mat-card-title>{{ p.name }}</mat-card-title>
+              <mat-card-subtitle>{{ p.category }}</mat-card-subtitle>
+            </div>
+            <mat-chip color="primary" selected>${{ p.price }}</mat-chip>
+          </div>
+        </mat-card>
+      </div>
+    </ng-template>
+  </div>
+</app-layout>
